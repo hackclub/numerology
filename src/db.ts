@@ -1,5 +1,5 @@
-import 'reflect-metadata'
-import { DataSource, Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
+import "reflect-metadata"
+import { DataSource, Entity, Column, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity()
 export class User {
@@ -20,9 +20,8 @@ export class User {
 }
 
 export const db = new DataSource({
-    type: 'sqlite',
-    database: 'db.sqlite',
+    type: "sqlite",
+    database: "db.sqlite",
     entities: [User],
     synchronize: true,
-    logging: true,
 })
