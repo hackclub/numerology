@@ -40,6 +40,6 @@ export class User {
 export const db = new DataSource({
     type: "sqlite",
     database: "db.sqlite",
-    entities: [User],
+    entities: [User, AI21Call],
     synchronize: true,
 })
