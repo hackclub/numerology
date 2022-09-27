@@ -72,8 +72,9 @@ const getTranscript = async (channel: string): Promise<Message[]> => {
 
     let messages = await getTranscript(channel)
 
-    await db.getRepository(User).clear() // :3
-    for (let i = 0; i < 4; i++) await userJoins(app)
+    let userCount = await db.getRepository(User).count()
+    if (userCount < 4)
+        for (let i = 0; i < 4 - userCount; i++) await userJoins(app)
 
     const messageFreq = 5 // average minutes between messages
     const joinFreq = 30 // average minutes between users joining
