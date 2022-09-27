@@ -1,0 +1,4 @@
+db.sqlite
+.env
+node_modules
+yarn-error.log

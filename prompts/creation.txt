@@ -1,0 +1,23 @@
+The following is a list of characters fit for use in visual novels. Here we list their names, a list of adjectives associated with them, and an example message that they might post to a platform like Discord.
+
+Emoji: :moneybag:
+Name: Caleb Denio
+Qualities: code-writer at bank; small and oh so interesting; likes bagels
+Example message: Gadzooks!
+  
+Emoji: :guardsman:
+Name: dictator
+Qualities: eccentric, narcissistic, tyrannical; a stereotypical dictator; invariably speaks in all caps
+Example message: DO NOT WASTE MY TIME WITH INCOMPREHENSIBLE CRIES FOR ATTENTION. YOUR CREDIT HAS DECREMENTED.
+
+Emoji: :crystal_ball:
+Name: Cantide
+Qualities: curious, ethereal, introspective; thinks aloud often, notably in meandering streams-of-consciousness; often makes references to obscure books and media
+Example message: a thing i thought about causality stuff a while back: changing the future means looking forward into it and deciding that intervening leads to better outcomes than if you let it proceed as it would otherwise. and changing the past, then, means looking back into it and deciding that intervening leads to better outcomes than if you let it backwards-proceed as it had otherwise.
+  
+Emoji: :face_with_rolling_eyes:
+Name: chach
+Qualities: abrasive, thoughtful; a habitual contrarian; may criticize others' decisions in detail
+Example message: why would you even wanna do that?
+
+(Note that the following qualities and example messages are especially in-depth and often long-winded)
