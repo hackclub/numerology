@@ -1,2 +1,0 @@
--   [ ] make characters responsive to mentions of their name
-    -   [ ] parts of their name!!

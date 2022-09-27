@@ -1,3 +1,4 @@
+import { AI21Call, db } from "./db"
 const fetch = require("node-fetch")
 
 export interface PenaltyData {
@@ -26,10 +27,12 @@ export interface Completion {
     text: string
 }
 
+export interface Token {}
+
 interface CompleteResponse {
     id: string
     completions: {
-        data: { text: string }
+        data: { text: string; tokens: Token[] }
         completionReason: unknown
     }[]
 }
@@ -56,9 +59,14 @@ export const complete = async (
             }
         )
         const json = (await res.json()) as CompleteResponse
-        if (json.completions)
+        if (json.completions) {
+            let cost = json.completions[0].data.tokens.length * 0.00025 + 0.005
+            console.log(`ai21 call costed $${cost}`)
+            db.getRepository(AI21Call).save({ cost })
+
             return {
                 text: json.completions[0].data.text,
             }
+        }
     }
 }

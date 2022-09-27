@@ -1,5 +1,23 @@
 import "reflect-metadata"
-import { DataSource, Entity, Column, PrimaryGeneratedColumn } from "typeorm"
+import {
+    CreateDateColumn,
+    DataSource,
+    Entity,
+    Column,
+    PrimaryGeneratedColumn,
+} from "typeorm"
+
+@Entity()
+export class AI21Call {
+    @PrimaryGeneratedColumn()
+    id: number
+
+    @CreateDateColumn()
+    createdAt: Date
+
+    @Column()
+    cost: number
+}
 
 @Entity()
 export class User {
