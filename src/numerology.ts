@@ -24,6 +24,8 @@ export const userPosts = async (app: App, messages: Message[]) => {
             icon_emoji: user.emoji,
         })
     }
+
+    console.log("user posted:", user.name)
 }
 
 export const userJoins = async (app: App) => {
@@ -35,6 +37,8 @@ export const userJoins = async (app: App) => {
         channel: process.env.NUMEROLOGY_CHANNEL,
         text: `${user.name} has joined the Project.`,
     })
+
+    console.log("user joined: user.name")
 }
 
 export const userLeaves = async (app: App) => {
@@ -53,4 +57,6 @@ export const userLeaves = async (app: App) => {
         channel: process.env.NUMEROLOGY_CHANNEL,
         text: `${user.name} has ascended to a higher plane.`,
     })
+
+    console.log("user left: user.name")
 }
