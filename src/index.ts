@@ -31,7 +31,7 @@ const getTranscript = async (channel: string): Promise<Message[]> => {
         (message) =>
             (message.subtype === undefined ||
                 message.subtype === "bot_message") &&
-            message.user !== process.env.NUMEROLOGY_USER
+            (message.user !== process.env.NUMEROLOGY_USER || message.username)
     )
     if (!rawMessages) throw new Error("invalid conversations.history response")
 
@@ -77,8 +77,8 @@ const getTranscript = async (channel: string): Promise<Message[]> => {
         for (let i = 0; i < 4 - userCount; i++) await userJoins(app)
 
     const messageFreq = 5 // average minutes between messages
-    const joinFreq = 30 // average minutes between users joining
-    const leaveFreq = 30 // average minutes between users leaving
+    const joinFreq = 90 // average minutes between users joining
+    const leaveFreq = 90 // average minutes between users leaving
 
     const tick = async () => {
         if (random.bernoulli(1 / messageFreq / 120)())
