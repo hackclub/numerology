@@ -20,7 +20,7 @@ const app = new App({
 })
 
 app.message(/.*/, async ({ message }) => {
-    if (message.subtype) return
+    if ((message as any).thread_ts) return
     newThread(message.ts)
     if (random.bernoulli(0.5)) userPosts(app, message.ts)
 })
