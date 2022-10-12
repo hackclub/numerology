@@ -32,7 +32,7 @@ app.message(/.*/, async ({ message }) => {
     let userCount = await db.getRepository(User).count()
     if (userCount < 4) for (let i = 0; i < 4 - userCount; i++) await userJoins()
 
-    const messageFreq = 0.2 // average minutes between messages given maximum activity
+    const messageFreq = 15 // average minutes between messages given maximum activity
     const newThreadFreq = 360 // average minutes between new threads
     const joinFreq = 90 // average minutes between users joining
     const leaveFreq = 90 // average minutes between users leaving
