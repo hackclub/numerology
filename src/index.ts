@@ -20,9 +20,9 @@ const app = new App({
 })
 
 app.message(/.*/, async ({ message }) => {
-    if ((message as any).thread_ts) return
-    newThread(message.ts)
-    if (random.bernoulli(0.5)) userPosts(app, message.ts)
+    const isThreaded = (message as any).thread_ts !== undefined
+    if (!isThreaded) newThread(message.ts)
+    if (random.bernoulli(isThreaded ? 0.3 : 0.7)) userPosts(app, message.ts)
 })
 //
 ;(async () => {
