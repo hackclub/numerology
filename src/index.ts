@@ -9,7 +9,7 @@ import {
     userJoins,
     userLeaves,
 } from "./numerology"
-import { threadActivity } from "./threads"
+import { newThread, threadActivity } from "./threads"
 
 dotenv.config()
 
@@ -19,6 +19,12 @@ const app = new App({
     socketMode: true,
 })
 
+app.message(/.*/, async ({ message }) => {
+    if (message.subtype) return
+    newThread(message.ts)
+    if (random.bernoulli(0.5)) userPosts(app, message.ts)
+})
+//
 ;(async () => {
     await db.initialize()
     await app.start()
