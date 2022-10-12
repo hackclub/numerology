@@ -2,9 +2,14 @@ import { App } from "@slack/bolt"
 import dotenv from "dotenv"
 import random from "random"
 
-import { db, User } from "./db"
-import { userPosts, userJoins, userLeaves } from "./numerology"
-import { Message } from "./users"
+import { db, Thread, User } from "./db"
+import {
+    userPosts,
+    userStartsThread,
+    userJoins,
+    userLeaves,
+} from "./numerology"
+import { threadActivity } from "./threads"
 
 dotenv.config()
 
@@ -14,77 +19,33 @@ const app = new App({
     socketMode: true,
 })
 
-const getDisplayName = async (user: string): Promise<string | undefined> => {
-    const userObj = await app.client.users.info({
-        token: process.env.SLACK_XOXB_TOKEN,
-        user,
-    })
-    return userObj.user?.profile?.display_name || userObj.user?.name
-}
-
-const getTranscript = async (channel: string): Promise<Message[]> => {
-    if (!process.env.NUMEROLOGY_USER) throw new Error("NUMEROLOGY_USER not set")
-
-    let rawMessages = (
-        await app.client.conversations.history({ channel, limit: 10 })
-    ).messages?.filter(
-        (message) =>
-            (message.subtype === undefined ||
-                message.subtype === "bot_message") &&
-            (message.user !== process.env.NUMEROLOGY_USER || message.username)
-    )
-    if (!rawMessages) throw new Error("invalid conversations.history response")
-
-    let messages = await Promise.all(
-        rawMessages.map(async (message) => {
-            let user = await (async () => {
-                if (message.user) {
-                    let displayName = await getDisplayName(message.user)
-                    if (displayName) return displayName
-                } else if (message.username) return message.username
-            })()
-
-            if (!user)
-                throw new Error("couldn't extract display name from message")
-            if (!message.text) throw new Error("message has no text")
-
-            return {
-                user,
-                text: message.text,
-            }
-        })
-    )
-    messages.reverse()
-
-    let reset = messages.find((message) => message.text === "RESET")
-    if (reset) messages = messages.slice(messages.indexOf(reset) + 1)
-
-    return messages
-}
-
 ;(async () => {
     await db.initialize()
     await app.start()
 
-    let channel: string
-    if (process.env.NUMEROLOGY_CHANNEL) channel = process.env.NUMEROLOGY_CHANNEL
-    else throw new Error("NUMEROLOGY_CHANNEL not set")
-
-    let messages = await getTranscript(channel)
-
     let userCount = await db.getRepository(User).count()
-    if (userCount < 4)
-        for (let i = 0; i < 4 - userCount; i++) await userJoins(app)
+    if (userCount < 4) for (let i = 0; i < 4 - userCount; i++) await userJoins()
 
-    const messageFreq = 5 // average minutes between messages
+    const messageFreq = 0.2 // average minutes between messages given maximum activity
+    const newThreadFreq = 360 // average minutes between new threads
     const joinFreq = 90 // average minutes between users joining
     const leaveFreq = 90 // average minutes between users leaving
 
     const tick = async () => {
-        if (random.bernoulli(1 / messageFreq / 120)())
-            await userPosts(app, messages)
-        if (random.bernoulli(1 / joinFreq / 120)()) await userJoins(app)
-        if (random.bernoulli(1 / leaveFreq / 120)()) await userLeaves(app)
+        const threads = await db.getRepository(Thread).find()
+        for (let thread of threads) {
+            if (
+                random.bernoulli(
+                    (1 / messageFreq / 120) *
+                        (await threadActivity(app, thread.ts))
+                )()
+            )
+                await userPosts(app, thread.ts)
+        }
+        if (random.bernoulli(1 / newThreadFreq / 120)())
+            await userStartsThread(app)
+        if (random.bernoulli(1 / joinFreq / 120)()) await userJoins()
+        if (random.bernoulli(1 / leaveFreq / 120)()) await userLeaves()
     }
     setInterval(tick, 500)
 })()

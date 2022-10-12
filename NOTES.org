@@ -1,5 +1,0 @@
-* TODO characters are responsive to name mentions
-** responsive to partial name mentions?
-* TODO fix horrid nonexistent emoji bug
-** setting a character's pfp to a nonexistent emoji causes Problems
-*** there are inconsistencies between github's emoji list and slack's default emojis

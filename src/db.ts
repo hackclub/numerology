@@ -20,6 +20,18 @@ export class AI21Call {
 }
 
 @Entity()
+export class Thread {
+    @PrimaryGeneratedColumn()
+    id: number
+
+    @CreateDateColumn()
+    createdAt: Date
+
+    @Column()
+    ts: string
+}
+
+@Entity()
 export class User {
     @PrimaryGeneratedColumn()
     id: number
@@ -40,6 +52,6 @@ export class User {
 export const db = new DataSource({
     type: "sqlite",
     database: "db.sqlite",
-    entities: [User, AI21Call],
+    entities: [AI21Call, Thread, User],
     synchronize: true,
 })
