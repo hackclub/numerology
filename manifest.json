@@ -14,6 +14,7 @@
                 "channels:history",
                 "chat:write",
                 "chat:write.customize",
+                "reactions:read",
                 "users:read"
             ]
         }
@@ -21,7 +22,8 @@
     "settings": {
         "event_subscriptions": {
             "bot_events": [
-                "message.channels"
+                "message.channels",
+                "reaction_added"
             ]
         },
         "interactivity": {

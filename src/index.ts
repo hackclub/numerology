@@ -24,6 +24,20 @@ app.message(/.*/, async ({ message }) => {
     if (!isThreaded) newThread(message.ts)
     if (random.bernoulli(isThreaded ? 0.3 : 0.7)) userPosts(app, message.ts)
 })
+
+app.event("reaction_added", async ({ event }) => {
+    console.log("reaction added")
+
+    if (!process.env.NUMEROLOGY_CHANNEL)
+        throw new Error("NUMEROLOGY_CHANNEL not set")
+
+    if (event.reaction === "tw_no_entry_sign" && "ts" in event.item)
+        app.client.chat.delete({
+            token: process.env.SLACK_XOXB_TOKEN,
+            channel: process.env.NUMEROLOGY_CHANNEL,
+            ts: event.item.ts,
+        })
+})
 //
 ;(async () => {
     await db.initialize()
