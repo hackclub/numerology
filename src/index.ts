@@ -54,14 +54,9 @@ app.event("reaction_added", async ({ event }) => {
         if (userCount < 4) for (let i = 0; i < 4 - userCount; i++) await userJoins()
 
         const messageFreq = 15 // average minutes between messages given maximum activity
-        // const newThreadFreq = 360 // average minutes between new threads
-        // const joinFreq = 720 // average minutes between users joining
-        // const leaveFreq = 720 // average minutes between users leaving
-
-        // SPEED!!! :3 :3
-        const newThreadFreq = 0.5
-        const joinFreq = 0.5
-        const leaveFreq = 0.5
+        const newThreadFreq = 360 // average minutes between new threads
+        const joinFreq = 720 // average minutes between users joining
+        const leaveFreq = 720 // average minutes between users leaving
 
         const tick = async () => {
             try {
