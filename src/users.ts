@@ -1,10 +1,12 @@
+import Chance from "chance"
 import { readFileSync } from "fs"
 import path from "path"
-import random from "random"
 const fetch = require("node-fetch")
 
 import { complete } from "./ai21"
 import { db, User } from "./db"
+
+const chance = new Chance()
 
 export type Message = {
     user: string
@@ -24,7 +26,10 @@ export const newUser = async () => {
     do {
         user = new User()
 
-        const emoji = emojis[Math.floor(random.int(0, emojis.length - 1))]
+        const emoji =
+            emojis[
+                Math.floor(chance.integer({ min: 0, max: emojis.length - 1 }))
+            ]
 
         const basePrompt = readFileSync(
             path.resolve(__dirname, "../prompts/creation.txt"),

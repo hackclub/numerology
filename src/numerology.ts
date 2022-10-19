@@ -1,9 +1,11 @@
 import { App } from "@slack/bolt"
-import random from "random"
+import Chance from "chance"
 
 import { db, User } from "./db"
 import { newThread } from "./threads"
 import { Message, newUser, writeMessage } from "./users"
+
+const chance = new Chance()
 
 const getDisplayName = async (
     app: App,
@@ -70,7 +72,7 @@ export const userPosts = async (app: App, thread_ts: string) => {
         .getOne()) as User
     if (!user) throw new Error("user can't post: no users")
 
-    for (let i = 0; i < random.int(1, 3); i++) {
+    for (let i = 0; i < chance.integer({ min: 1, max: 3 }); i++) {
         const response = await writeMessage(
             user,
             await getTranscript(app, thread_ts)
