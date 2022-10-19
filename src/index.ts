@@ -53,10 +53,10 @@ app.event("reaction_added", async ({ event }) => {
         let userCount = await db.getRepository(User).count()
         if (userCount < 4) for (let i = 0; i < 4 - userCount; i++) await userJoins()
 
-        const messageFreq = 15 // average minutes between messages given maximum activity
-        const newThreadFreq = 360 // average minutes between new threads
-        const joinFreq = 720 // average minutes between users joining
-        const leaveFreq = 720 // average minutes between users leaving
+        const messageFreq = parseInt(process.env.NUMEROLOGY_MESSAGE_FREQ || "15") // average minutes between messages given maximum activity
+        const newThreadFreq = parseInt(process.env.NUMEROLOGY_NEW_THREAD_FREQ || "360") // average minutes between new threads
+        const joinFreq = parseInt(process.env.NUMEROLOGY_JOIN_FREQ || "720") // average minutes between users joining
+        const leaveFreq = parseInt(process.env.NUMEROLOGY_LEAVE_FREQ || "720") // average minutes between users leaving
 
         const tick = async () => {
             try {
